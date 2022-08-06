@@ -1,0 +1,50 @@
+from tkinter import *
+import tkinter.font as font
+from random import randint
+
+root = Tk()
+root.title("Random Number Game")
+root.geometry("600x600")
+root.resizable(False, False)
+
+def invalid():
+    invalidAnswer = Label(root, font=("Arial", 20), text = "Invalid Answer! Please enter a integer[0-10]")
+    invalidAnswer.place(x = 110, y = 200)
+    root.after(3000, invalidAnswer.destroy)
+
+count = 0
+def get_input():
+    try: 
+        global count
+        value = randint(0, 10)
+        userInput = textfieldone.get("1.0",END)
+        guess = int(userInput)
+        if guess >= 0 and guess <= 10:   
+            if guess == value:
+                count = count + 1
+                correctAnswer = Label(root, font=("Arial", 30), text = "CORRECT! \nYour Guess: " + str(guess) + "\nAnswer: " + str(value))
+                correctAnswer.place(x = 200,y = 200)
+                root.after(3000, correctAnswer.destroy) 
+            else:
+                count = count - 1
+                wrongAnswer = Label(root, font=("Arial", 30), text = "WRONG! \n Your Guess: " + str(guess) + "\n Answer: " + str(value))
+                wrongAnswer.place(x = 200,y = 200)
+                root.after(3000, wrongAnswer.destroy) 
+            textfieldone.delete("1.0",END)
+            score = Label(root, font=("Arial", 25), text = "Score: " + str(count))
+            score.place(x=20, y=10)
+        else: 
+            invalid()
+    except: 
+        invalid()
+
+
+myFont = font.Font(family='Arial', size=15)
+checkButton = Button(root, text="CHECK", bg="red", height=3, width=15, font=myFont, command=get_input)
+checkButton.place(x=230, y=450)
+
+textfieldone = Text(root, height=1, width=23)
+textfieldone.focus_set()
+textfieldone.place(x=228, y=400)
+
+root.mainloop()
